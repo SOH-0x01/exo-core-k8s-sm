@@ -1,0 +1,53 @@
+  - name: Start cluster master
+    local_action:
+      module: cs_instance
+      name: "{{ cluster_prefix }}-{{ cluster_name }}-master"
+      zone: "{{ exo_zone }}"
+      template: "{{ exo_template }}"
+      service_offering: "{{ exo_instance_type }}"
+      ssh_key: "{{ cluster_ssh_key }}"
+      security_groups: [ '{{ cluster_security_group_name }}' ]
+      tags:
+        - { key: env, value: "{{ cluster_env }}" }
+        - { key: cluster_name, value: "{{ cluster_name }}" }
+        - { key: cluster_role, value: master }
+      user_data: "{{ lookup('template', '../templates/master-cloud-config.j2') }}"
+    register: master_node
+    tags: vm
+
+  - debug: msg='The cluster master IP is {{ master_node.default_ip }}'
+
+  - add_host:
+      groups: masters
+      hostname: "{{ master_node.display_name }}"
+      ansible_host: "{{ master_node.default_ip }}"
+      ansible_user: core
+      ansible_python_interpreter: /opt/bin/python
+    tags: vm
+
+  - name: Start cluster workers
+    local_action:
+      module: cs_instance
+      name: "{{ cluster_prefix }}-{{ cluster_name }}-worker-{{ item }}"
+      zone: "{{ exo_zone }}"
+      template: "{{ exo_template }}"
+      service_offering: "{{ exo_instance_type }}"
+      ssh_key: "{{ cluster_ssh_key }}"
+      security_groups: [ '{{ cluster_security_group_name }}' ]
+      tags:
+        - { key: env, value: "{{ cluster_env }}" }
+        - { key: cluster_name, value: "{{ cluster_name }}" }
+        - { key: cluster_role, value: worker }
+      user_data: "{{ lookup('template', '../templates/worker-cloud-config.j2') }}"
+    with_sequence: count={{ nb_nodes }}
+    register: worker_nodes
+    tags: vm
+
+  - add_host:
+      groups: workers
+      hostname: "{{ item.display_name }}"
+      ansible_host: "{{ item.default_ip }}"
+      ansible_user: core
+      ansible_python_interpreter: /opt/bin/python
+    with_items: "{{ worker_nodes.results }}"
+    tags: vm

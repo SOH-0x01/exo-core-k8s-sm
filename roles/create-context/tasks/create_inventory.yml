@@ -1,0 +1,4 @@
+# Create inventory file
+  - name: Create cluster inventory
+    template: src=cluster-inventory.j2 dest=./cluster-inventory
+    tags: inv

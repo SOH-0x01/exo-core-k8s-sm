@@ -1,0 +1,113 @@
+# Cluster Security Groups
+  - name: Delete cluster SSH for remote access
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "{{ cluster_security_group_name}}"
+      start_port: 22
+      end_port: 22
+      state: absent
+    tags: sgr
+
+# CoreOS/k8s Security Groups
+  - name: Delete etcd 4001 TCP rule
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "{{ cluster_security_group_name}}"
+      start_port: 4001
+      end_port: 4001
+      user_security_group: "{{ cluster_security_group_name}}"
+      state: absent
+    tags: sgr
+
+  - name: Delete etcd 7001 TCP rule
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "{{ cluster_security_group_name}}"
+      start_port: 7001
+      end_port: 7001
+      user_security_group: "{{ cluster_security_group_name}}"
+      state: absent
+    tags: sgr
+
+  - name: Delete flannel etcd 2379 TCP rule
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "{{ cluster_security_group_name}}"
+      start_port: 2379
+      end_port: 2379
+      user_security_group: "{{ cluster_security_group_name}}"
+      state: absent
+    tags: sgr
+
+  - name: Delete flannel etcd 2380 TCP rule
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "{{ cluster_security_group_name}}"
+      start_port: 2380
+      end_port: 2380
+      user_security_group: "{{ cluster_security_group_name}}"
+      state: absent
+    tags: sgr
+
+  - name: Delete flannel 8472 UDP rule
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "{{ cluster_security_group_name}}"
+      start_port: 8472
+      end_port: 8472
+      protocol: udp
+      user_security_group: "{{ cluster_security_group_name}}"
+      state: absent
+    tags: sgr
+
+  - name: Delete k8s logs and exec 10250 TCP rule
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "{{ cluster_security_group_name}}"
+      start_port: 10250
+      end_port: 10250
+      protocol: tcp
+      user_security_group: "{{ cluster_security_group_name}}"
+      state: absent
+    tags: sgr
+
+# Kubernetes API Security Groups
+  - name: Delete k8s internal secure 443 TCP rule
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "{{ cluster_security_group_name}}"
+      start_port: 443
+      end_port: 443
+      protocol: tcp
+      user_security_group: "{{ cluster_security_group_name}}"
+      state: absent
+    tags: sgr
+
+  - name: Delete k8s public secure 443 TCP rule
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "{{ cluster_security_group_name}}"
+      start_port: 443
+      end_port: 443
+      protocol: tcp
+      state: absent
+    tags: sgr
+
+  - name: Delete k8s internal 8080 TCP rule
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "{{ cluster_security_group_name}}"
+      start_port: 8080
+      end_port: 8080
+      user_security_group: "{{ cluster_security_group_name}}"
+      state: absent
+    tags: sgr
+
+  - name: Delete k8s public 8080 TCP rule
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "{{ cluster_security_group_name}}"
+      start_port: 8080
+      end_port: 8080
+      state: absent
+    tags: sgr

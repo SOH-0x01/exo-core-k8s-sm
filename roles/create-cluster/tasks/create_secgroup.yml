@@ -1,0 +1,7 @@
+# Create cluster security group
+  - name: Create cluster security group
+    local_action:
+      module: cs_securitygroup
+      name: "{{ cluster_security_group_name }}"
+      description: Security group for the {{ cluster_name }} cluster (All roles)
+    tags: sg

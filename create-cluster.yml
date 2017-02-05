@@ -1,0 +1,17 @@
+---
+- hosts: localhost
+  connection: local
+  vars:
+    # Constants
+    k8s_version: 1.4.1
+    k8s_username: pamti
+    k8s_password: pam1805
+    k8s_binaries: https://storage.googleapis.com/kubernetes-release/release/v{{ k8s_version }}/bin
+    exo_zone: CH-GVA-2
+    exo_template: Linux CoreOS stable 1122 64-bit 50G Disk (2016-09-06-dcb493)
+    exo_instance_type: Tiny
+    # Parameters
+    nb_nodes: "{{ cluster_init_nb_nodes }}"
+  roles:
+    - create-cluster
+    - create-context

@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  connection: local
+  pre_tasks:
+    - name: Confirm total destruction
+      pause: prompt='Please confirm you want to destroy! Press return to continue. Press Ctrl+c and then "a" to abort'
+  vars:
+    # Parameters
+    nb_nodes: "{{ cluster_init_nb_nodes }}"
+  roles:
+    - destroy-context
+    - destroy-cluster

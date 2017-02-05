@@ -1,0 +1,3 @@
+---
+  - include: delete_context.yml
+  - include: delete_inventory.yml

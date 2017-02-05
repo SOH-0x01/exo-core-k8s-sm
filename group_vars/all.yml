@@ -1,0 +1,8 @@
+# Global variables
+cluster_name: baratheon
+cluster_env: DEV
+cluster_prefix: datsci-exo
+cluster_init_nb_nodes: 2
+cluster_ssh_key: datsci-exo-kp
+cluster_ssh_cidr: 0.0.0.0/0
+cluster_security_group_name: datsci-exo-sg-baratheon

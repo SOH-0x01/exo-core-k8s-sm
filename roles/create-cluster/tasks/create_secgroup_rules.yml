@@ -1,0 +1,66 @@
+# Cluster Security Groups
+  - name: Create cluster SSH for remote access
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "{{ cluster_security_group_name}}"
+      start_port: 22
+      end_port: 22
+      cidr: "{{ cluster_ssh_cidr }}"
+    tags: sgr
+
+# CoreOS/k8s discovery Security Groups
+  - name: Create flannel etcd 2379 TCP rule
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "{{ cluster_security_group_name}}"
+      start_port: 2379
+      end_port: 2379
+      user_security_group: "{{ cluster_security_group_name}}"
+    tags: sgr
+
+  - name: Create flannel etcd 2380 TCP rule
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "{{ cluster_security_group_name}}"
+      start_port: 2380
+      end_port: 2380
+      user_security_group: "{{ cluster_security_group_name}}"
+    tags: sgr
+
+  - name: Create flannel 8472 UDP rule
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "{{ cluster_security_group_name}}"
+      start_port: 8472
+      end_port: 8472
+      protocol: udp
+      user_security_group: "{{ cluster_security_group_name}}"
+    tags: sgr
+
+  - name: Create k8s logs and exec 10250 TCP rule
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "{{ cluster_security_group_name}}"
+      start_port: 10250
+      end_port: 10250
+      protocol: tcp
+      user_security_group: "{{ cluster_security_group_name}}"
+    tags: sgr
+
+# Kubernetes API Security Groups
+  - name: Create k8s public secure 443 TCP rule
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "{{ cluster_security_group_name}}"
+      start_port: 443
+      end_port: 443
+    tags: sgr
+
+  - name: Create k8s internal 8080 TCP rule
+    local_action:
+      module: cs_securitygroup_rule
+      security_group: "{{ cluster_security_group_name}}"
+      start_port: 8080
+      end_port: 8080
+      user_security_group: "{{ cluster_security_group_name}}"
+    tags: sgr

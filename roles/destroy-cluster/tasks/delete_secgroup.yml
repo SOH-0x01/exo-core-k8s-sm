@@ -1,0 +1,7 @@
+# Delete k8s security group
+  - name: Delete cluster security group
+    local_action:
+      module: cs_securitygroup
+      name: "{{ cluster_security_group_name }}"
+      state: absent
+    tags: sg

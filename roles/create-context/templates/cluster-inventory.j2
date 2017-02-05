@@ -1,0 +1,17 @@
+[masters]
+{% for name in groups['masters'] %}
+{{ name }} ansible_host={{ hostvars[name]['ansible_host'] }}
+{% endfor %}
+
+[workers]
+{% for name in groups['workers'] %}
+{{ name }} ansible_host={{ hostvars[name]['ansible_host'] }}
+{% endfor %}
+
+[{{ cluster_name }}]
+masters
+workers
+
+[{{ cluster_name }}:vars]
+ansible_ssh_user=core
+ansible_python_interpreter=/opt/bin/python
